@@ -1,0 +1,8 @@
+---
+# Grúas Alfa · publicación de alfagruas.com.mx desde GitHub (cPanel → Git Version Control).
+# Copia el sitio a public_html sin borrar lo que ya existe ahí (.well-known, cgi-bin).
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home2/alfagrua/public_html/
+    - /bin/rsync -rlt --chmod=D755,F644 --exclude='.git' --exclude='.cpanel.yml' --exclude='README.md' ./ $DEPLOYPATH
+    - /bin/chmod 755 $DEPLOYPATH

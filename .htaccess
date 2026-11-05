@@ -1,0 +1,30 @@
+# Grúas Alfa · sitio estático (nov 2026)
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://alfagruas.com.mx%{REQUEST_URI} [L,R=301]
+# Restos de WordPress: ya no existen
+RewriteRule ^(wp-admin|wp-includes|wp-login\.php|xmlrpc\.php|wp-json) - [R=410,L]
+RewriteRule ^(feed|comments/feed|author|category|tag)(/.*)?$ / [L,R=301]
+</IfModule>
+
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set X-Frame-Options "SAMEORIGIN"
+<FilesMatch "\.(css|js|woff2|webp|jpg|png|ico|svg)$">
+Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
+<FilesMatch "\.html$">
+Header set Cache-Control "no-cache"
+</FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>
